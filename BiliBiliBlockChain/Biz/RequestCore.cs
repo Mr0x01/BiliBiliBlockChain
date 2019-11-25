@@ -59,7 +59,7 @@ namespace BiliBiliBlockChain.Biz
             while (true)
             {
                 client.Headers.Set(HttpRequestHeader.UserAgent, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-                Thread.Sleep(700);
+                Thread.Sleep(1000);
                 byte[] rep = new byte[] { };
                 RequestObject req = getOneTask();
                 if (req != null)
