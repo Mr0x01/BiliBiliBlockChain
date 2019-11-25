@@ -39,8 +39,9 @@ B站官方限制了只能获取前5页的关注者，经过测试每页最多50�
 # 碰碰运气
 
 如果这个项目帮到了你，或者感觉有点儿意思，可以的话还请支持一下。
-<div align="center">
+<div>
 <img src="https://raw.githubusercontent.com/Mr0x01/MoneyCode/master/a.jpg" height="300"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 <img src="https://raw.githubusercontent.com/Mr0x01/MoneyCode/master/w.jpg"height="300" />
 </div>
 
