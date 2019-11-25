@@ -11,7 +11,7 @@ namespace BiliBiliBlockChain.Utils
     {
         protected override WebRequest GetWebRequest(Uri address)
         {
-            var request = (HttpWebRequest)base.GetWebRequest(address);
+            HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
             request.Timeout = 10 * 60 * 1000;
             request.AllowAutoRedirect = false;
             return request;

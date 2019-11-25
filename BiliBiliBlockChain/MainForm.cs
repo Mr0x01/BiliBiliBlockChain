@@ -17,6 +17,7 @@ namespace BiliBiliBlockChain
     public partial class MainForm : Form
     {
         public static TextBox logBox1;
+        public static PictureBox faceBox1;
         private AuthUtil authUtil;
         private RequestCore requestCore;
         public MainForm()
@@ -31,6 +32,7 @@ namespace BiliBiliBlockChain
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             logBox1 = logBox;
+            faceBox1 = headImg;
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -56,9 +58,20 @@ namespace BiliBiliBlockChain
                 requestObject.method = Method.get;
                 requestObject.callBackFunc = BlockChainCore.FetchFollowerList;
                 requestObject.meta["page"] = 1;
+                requestObject.meta["userId"] = userIdTextbox.Text;
                 requestCore.AddReq(requestObject);
             }
-            
+
+        }
+
+        private void AboutTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HeadImg_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

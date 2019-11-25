@@ -1,4 +1,6 @@
-﻿using BiliBiliBlockChain.Utils;
+﻿using BiliBiliBlockChain.Biz;
+using BiliBiliBlockChain.Model;
+using BiliBiliBlockChain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,6 +20,7 @@ namespace BiliBiliBlockChain
     {
         private AuthUtil authUtil;
         private MainForm mainForm;
+        private static RequestCore requestCore = RequestCore.GetInstance();
         public LoginBroswerFrame()
         {
             InitializeComponent();
@@ -27,6 +30,7 @@ namespace BiliBiliBlockChain
 
         private void LoginBroswerFrame_Load(object sender, EventArgs e)
         {
+            LogUtil.Log("启动登录窗口");
             loginBroswer.Navigated += LoginBroswer_Navigated;
             loginBroswer.ScriptErrorsSuppressed = true;
             loginBroswer.WebBrowserShortcutsEnabled = false;
@@ -40,7 +44,6 @@ namespace BiliBiliBlockChain
             WebBrowser webBrowser = (WebBrowser)sender;
             if (e.Url.AbsolutePath != "blank")
             {
-                LogUtil.Log(e.Url.ToString());
                 if (e.Url.ToString().Contains("https://passport.biligame.com/crossDomain?"))
                 {
                     //登陆成功
@@ -60,6 +63,15 @@ namespace BiliBiliBlockChain
                         cookieString.Append("SESSDATA=").Append(HttpUtility.UrlEncode(param["SESSDATA"]));
                         authUtil.cookieString = cookieString.ToString();
                         authUtil.isLogin = true;
+                        RequestObject requestObject = new RequestObject();
+                        Uri followerUrl = new Uri($"https://api.bilibili.com/x/web-interface/nav");
+                        requestObject.url = followerUrl;
+                        WebHeaderCollection webHeader = new WebHeaderCollection();
+                        webHeader.Add(HttpRequestHeader.Cookie, authUtil.cookieString);
+                        requestObject.requestHeaders = webHeader;
+                        requestObject.method = Method.get;
+                        requestObject.callBackFunc = BlockChainCore.FetchLoginUserInfoCallBack;
+                        requestCore.AddReq(requestObject);
                         MessageBox.Show("登陆成功");
                         this.Close();
                     }

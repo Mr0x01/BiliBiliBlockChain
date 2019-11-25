@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,7 +22,9 @@ namespace BiliBiliBlockChain
         {
             string re = Encoding.UTF8.GetString(req.repByte);
             int page = (int)req.meta["page"];
-            var followerObject = JsonConvert.DeserializeObject<Follower>(re);
+            string userId = (string)req.meta["userId"];
+
+            Follower followerObject = JsonConvert.DeserializeObject<Follower>(re);
             for (int i = 0; i < followerObject.data.list.Count; i++)
             {
                 int uid = followerObject.data.list[i].mid;
@@ -42,14 +45,41 @@ namespace BiliBiliBlockChain
                 requestObject.callBackFunc = BlockUserCallBack;
                 requestCore.AddReq(requestObject);
             }
+            if (followerObject.data.list.Count == 50 && page != 5)
+            {
+                page++;
+                RequestObject requestObject = new RequestObject();
+                Uri followerUrl = new Uri($"https://api.bilibili.com/x/relation/followers?vmid={userId}&pn={page}&ps=50&order=desc&jsonp=jsonp");
+                requestObject.url = followerUrl;
+                WebHeaderCollection webHeader = new WebHeaderCollection();
+                webHeader.Add(HttpRequestHeader.Cookie, authUtil.cookieString);
+                requestObject.requestHeaders = webHeader;
+                requestObject.method = Method.get;
+                requestObject.callBackFunc = BlockChainCore.FetchFollowerList;
+                requestObject.meta["page"] = page;
+                requestObject.meta["userId"] = userId;
+                requestCore.AddReq(requestObject);
+            }
         }
 
         public static void BlockUserCallBack(RequestObject req)
         {
-            string re = Encoding.UTF8.GetString(req.repByte);
             //{"code":-111,"message":"csrf 校验失败","ttl":1}
             //{"code":0,"message":"0","ttl":1}
-            JObject result = JObject.Parse(re);
+            string re = Encoding.UTF8.GetString(req.repByte);
+            LogUtil.Log(req.requestPara.Get("fid") + "-" + re);
+        }
+
+        public static void FetchLoginUserInfoCallBack(RequestObject req)
+        {
+            string re = Encoding.UTF8.GetString(req.repByte);
+            UserInfo userInfo = JsonConvert.DeserializeObject<UserInfo>(re);
+            LogUtil.Log("当前登录用户信息-" + re);
+            MainForm.faceBox1.Invoke(new Action(() =>
+            {
+                MainForm.faceBox1.ImageLocation = userInfo.data.face;
+                MainForm.faceBox1.Refresh();
+            }));
         }
     }
 }

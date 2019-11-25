@@ -28,6 +28,7 @@ namespace BiliBiliBlockChain.Utils
                     new Action(() =>
                     {
                         MainForm.logBox1.Text += $"[{now}][{level.ToString()}][{message}]\r\n";
+                        MainForm.logBox1.ScrollToCaret();
                     })
                 );
         }
