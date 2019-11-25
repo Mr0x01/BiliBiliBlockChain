@@ -73,9 +73,9 @@ namespace BiliBiliBlockChain.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap 手枪 {
+        internal static System.Drawing.Bitmap BiliBiliBlockChain1 {
             get {
-                object obj = ResourceManager.GetObject("手枪", resourceCulture);
+                object obj = ResourceManager.GetObject("BiliBiliBlockChain1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
